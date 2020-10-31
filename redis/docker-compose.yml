@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  redis:
+    image: docker.io/redis:latest
+    restart: always
+    hostname: redis
+    ports:
+      - 6379:6379
+    environment:
+      TZ: Asia/Shanghai
+    command:
+      redis-server --bind 172.20.0.7 --appendonly yes --requirepass febs-cloud
+    volumes:
+    - ./data:/data
+    networks:
+      febs-cloud-bridge:
+        ipv4_address: 172.20.0.7
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+networks:
+  febs-cloud-bridge:
+    driver: bridge
+    external:
+      name: febs-cloud-bridge
